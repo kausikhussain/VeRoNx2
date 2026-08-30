@@ -1,0 +1,6 @@
+.campaign-art,.editorial-art{position:absolute;inset:0;background:radial-gradient(ellipse at 78% 37%,#4a423c 0,#29272a 23%,#111217 57%,#0d0e11 100%)}
+.campaign-art:after{content:"A";position:absolute;right:9%;bottom:-12%;font:700 65vw/1 "Playfair Display";color:#c5a880;opacity:.08}
+.fit-preview{background:radial-gradient(ellipse at 50% 44%,#4c423c 0,#24252d 38%,#111217 80%);display:grid;place-items:center}
+.fit-preview span{font:500 54px/1 "Playfair Display";letter-spacing:-.06em;color:#d9d2c7}.fit-preview i{font:11px "DM Mono";letter-spacing:.2em;color:#ff6b35}
+.editorial-art{background:radial-gradient(ellipse at 65% 45%,#5b4a3b 0,#2a2527 25%,#0d0e11 70%)}
+.editorial-art:after{content:"26";position:absolute;right:7%;bottom:-6%;font:700 40vw/1 "Playfair Display";color:#c5a880;opacity:.1}
