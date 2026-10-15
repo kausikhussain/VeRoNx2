@@ -1,6 +1,648 @@
-.campaign-art,.editorial-art{position:absolute;inset:0;background:radial-gradient(ellipse at 78% 37%,#4a423c 0,#29272a 23%,#111217 57%,#0d0e11 100%)}
-.campaign-art:after{content:"A";position:absolute;right:9%;bottom:-12%;font:700 65vw/1 "Playfair Display";color:#c5a880;opacity:.08}
-.fit-preview{background:radial-gradient(ellipse at 50% 44%,#4c423c 0,#24252d 38%,#111217 80%);display:grid;place-items:center}
-.fit-preview span{font:500 54px/1 "Playfair Display";letter-spacing:-.06em;color:#d9d2c7}.fit-preview i{font:11px "DM Mono";letter-spacing:.2em;color:#ff6b35}
-.editorial-art{background:radial-gradient(ellipse at 65% 45%,#5b4a3b 0,#2a2527 25%,#0d0e11 70%)}
-.editorial-art:after{content:"26";position:absolute;right:7%;bottom:-6%;font:700 40vw/1 "Playfair Display";color:#c5a880;opacity:.1}
+/* ============================================================
+   VeRoN — PREMIUM LIVE FITTING STUDIO
+   Enlarged Model Preview · Seamless Crossfade · High-Performance
+   ============================================================ */
+
+/* ── 1. Split-Screen Layout Proportions ─────────────────────── */
+.shop-shell {
+  display: grid;
+  grid-template-columns: minmax(430px, 40vw) 1fr;
+  align-items: start;
+  min-height: calc(100vh - var(--header-h));
+  position: relative;
+  background: var(--bg);
+}
+
+@media (min-width: 1440px) {
+  .shop-shell {
+    grid-template-columns: minmax(480px, 41vw) 1fr;
+  }
+}
+
+.fitting-room {
+  position: sticky;
+  top: var(--header-h);
+  height: calc(100vh - var(--header-h));
+  padding: 14px 18px 12px;
+  border-right: 1px solid var(--border);
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
+  z-index: 20;
+}
+
+/* ── 2. Studio Model Stage (Maximized Viewport Proportions) ── */
+.studio-shell {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.model-stage {
+  flex: 1;
+  height: 100%;
+  min-height: 0;
+  background: radial-gradient(
+    ellipse 85% 75% at 50% 28%,
+    #252936 0%,
+    #171922 46%,
+    #0D0E13 90%
+  );
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 20px 48px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.studio-stage-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Studio Crosshairs & Frame Registration */
+.studio-crosshairs {
+  position: absolute;
+  inset: 12px;
+  pointer-events: none;
+  z-index: 6;
+}
+
+.studio-crosshairs .ch {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.16);
+  line-height: 1;
+  user-select: none;
+}
+
+.ch-tl { top: 0; left: 0; }
+.ch-tr { top: 0; right: 0; }
+.ch-bl { bottom: 0; left: 0; }
+.ch-br { bottom: 0; right: 0; }
+
+/* ── 3. Intentional Empty State ("Build Your Look") ─────────── */
+.studio-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 30px 24px;
+  max-width: 340px;
+  margin: auto;
+  z-index: 4;
+}
+
+.empty-silhouette-wrap {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  margin-bottom: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-silhouette-icon {
+  width: 70px;
+  height: 70px;
+  color: var(--luxury);
+  filter: drop-shadow(0 0 16px rgba(197, 168, 128, 0.22));
+}
+
+.empty-glow-spot {
+  position: absolute;
+  inset: -12px;
+  background: radial-gradient(circle, rgba(197, 168, 128, 0.16) 0%, transparent 70%);
+  pointer-events: none;
+  animation: pulse-glow 3.5s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.5; transform: scale(0.95); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+.empty-copy .eyebrow {
+  margin-bottom: 6px;
+  color: var(--luxury);
+}
+
+.empty-copy h2 {
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--text);
+  line-height: 1.15;
+  margin-bottom: 10px;
+  letter-spacing: -0.02em;
+}
+
+.empty-copy p {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.55;
+  margin-bottom: 18px;
+}
+
+.empty-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 13px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.status-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--luxury);
+  box-shadow: 0 0 8px rgba(197, 168, 128, 0.5);
+  animation: pulse-dot 2.2s infinite ease-in-out;
+}
+
+/* ── 4. Photorealistic Dressed Model Container ──────────────── */
+.studio-model-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 4;
+}
+
+/* Top Studio HUD */
+.studio-hud-top {
+  position: absolute;
+  top: 12px;
+  left: 14px;
+  right: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+.hud-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: rgba(13, 14, 19, 0.82);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-xs);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--luxury);
+}
+
+.hud-icon {
+  color: var(--accent);
+}
+
+.hud-reset-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 8px;
+  background: rgba(13, 14, 19, 0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-xs);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: all var(--motion-standard) var(--ease-out);
+}
+
+.hud-reset-btn:hover {
+  color: var(--accent);
+  border-color: rgba(255, 107, 53, 0.3);
+}
+
+/* Model Image Display Frame — Full Bleed With High Elegance */
+.studio-model-frame {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 6px; /* Streamlined padding to maximize model scale */
+  box-sizing: border-box;
+}
+
+.studio-model-img {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  max-height: 98%;
+  max-width: 96%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 28px rgba(0, 0, 0, 0.72)) contrast(1.03);
+  user-select: none;
+  pointer-events: none;
+}
+
+.studio-model-img.base-layer {
+  z-index: 2;
+  opacity: 1;
+}
+
+.studio-model-img.incoming-layer {
+  z-index: 3;
+}
+
+/* Ambient Floor Shadow under Model */
+.studio-model-shadow {
+  position: absolute;
+  bottom: 8px;
+  left: 20%;
+  right: 20%;
+  height: 26px;
+  background: radial-gradient(
+    ellipse at 50% 100%,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0.35) 45%,
+    transparent 75%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Bottom Studio HUD */
+.studio-hud-bottom {
+  position: absolute;
+  bottom: 12px;
+  left: 14px;
+  right: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+.single-piece-hud {
+  background: rgba(13, 14, 19, 0.88);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+.hud-product-info {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 11px;
+}
+
+.hud-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--luxury);
+}
+
+.hud-title {
+  color: var(--text);
+  font-weight: 500;
+  font-size: 11.5px;
+}
+
+.hud-color {
+  color: var(--muted);
+  font-size: 10px;
+}
+
+/* Multi-piece selection bar inside studio */
+.multi-piece-bar {
+  background: rgba(13, 14, 19, 0.92);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 5px 10px;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  max-width: 95%;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.multi-piece-bar::-webkit-scrollbar { display: none; }
+
+.multi-piece-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.multi-piece-chips {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.piece-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--muted);
+  font-size: 9.5px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--motion-standard) var(--ease-out);
+}
+
+.piece-tab:hover {
+  color: var(--text);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.piece-tab.active {
+  background: rgba(255, 107, 53, 0.16);
+  border-color: var(--accent);
+  color: #FFFFFF;
+}
+
+.piece-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--muted-dim);
+}
+
+.piece-tab.active .piece-dot {
+  background: var(--accent);
+  box-shadow: 0 0 6px var(--accent-glow);
+}
+
+/* ── 5. Product Cards — Immediate Selection & Visual Feedback ─ */
+.product-card {
+  position: relative;
+  transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.product-card:active {
+  transform: scale(0.985);
+}
+
+.product-photo {
+  aspect-ratio: 4/5;
+  position: relative;
+  background: #14161C;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  transition: border-color 0.18s ease,
+              box-shadow 0.18s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+  box-sizing: border-box;
+}
+
+.product-photo img {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain !important;
+  filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.42));
+  transition: transform var(--motion-premium) var(--ease-out),
+              filter var(--motion-premium) var(--ease-out);
+}
+
+.product-card:hover .product-photo img {
+  transform: scale(1.05);
+  filter: drop-shadow(0 16px 20px rgba(0, 0, 0, 0.55)) brightness(1.04);
+}
+
+/* Instantaneous Selected Active Preview Ring */
+.product-card.is-active-preview .product-photo {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 20px var(--accent-glow), 0 0 0 1px var(--accent) !important;
+}
+
+.product-card.is-equipped .product-photo {
+  border-color: rgba(255, 107, 53, 0.45);
+}
+
+/* Top card actions (Quick view & Wishlist) */
+.top-card-actions {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 5;
+}
+
+.quickview-btn {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  background: rgba(14, 15, 20, 0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-xs);
+  color: var(--muted);
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: all var(--motion-standard) var(--ease-out);
+}
+
+.product-card:hover .quickview-btn {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.quickview-btn:hover {
+  color: var(--text);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ── 6. Compact Look Summary ───────────────────────────────── */
+.look-summary {
+  flex-shrink: 0;
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.outfit-chips .chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  transition: all var(--motion-standard) var(--ease-out);
+}
+
+.outfit-chips .chip:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.outfit-chips .chip.is-previewed {
+  border-color: var(--accent);
+  background: rgba(255, 107, 53, 0.12);
+}
+
+.chip-select-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 8px 4px 5px;
+  color: var(--text-secondary);
+  font-size: 9px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.chip.is-previewed .chip-select-btn {
+  color: #FFFFFF;
+}
+
+.chip-select-btn img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  border-radius: var(--radius-xs);
+  background: var(--card);
+}
+
+.chip-remove-btn {
+  padding: 4px 8px 4px 4px;
+  color: var(--muted-dim);
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color var(--motion-micro);
+}
+
+.chip-remove-btn:hover {
+  color: var(--accent);
+}
+
+/* Category filter pill count */
+.pill-count {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  opacity: 0.65;
+  margin-left: 4px;
+}
+
+/* ── 7. Responsive Layout ──────────────────────────────────── */
+@media (max-width: 1023px) {
+  .shop-shell {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .fitting-room {
+    position: relative;
+    top: 0;
+    height: auto;
+    min-height: 520px;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding: 18px 4vw;
+  }
+
+  .model-stage {
+    min-height: 440px;
+  }
+
+  .discovery {
+    padding: 24px 4vw 60px;
+  }
+
+  .discovery .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  .discovery .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .fitting-room {
+    min-height: 460px;
+  }
+
+  .model-stage {
+    min-height: 380px;
+  }
+}
+
+/* ── 8. Accessibility & Reduced Motion ─────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
